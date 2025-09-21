@@ -17,6 +17,18 @@ const OPENROUTER_CONFIG = {
   }
 };
 
+// Define types for better type safety
+interface BasicRelatedKeyword {
+  keyword: string;
+  popularity: number;
+  trend?: string;
+}
+
+interface TrendData {
+  averagePopularity: number;
+  trend: string;
+}
+
 interface AIKeywordAnalysis {
   relatedKeywords: {
     keyword: string;
@@ -38,11 +50,41 @@ interface AIKeywordAnalysis {
   };
 }
 
+interface OriginalAnalysis {
+  relatedKeywords?: BasicRelatedKeyword[];
+  searchVolume?: {
+    current?: number;
+    trend?: string;
+  };
+  insights?: Record<string, unknown>;
+}
+
+interface EnhancedAnalysis extends OriginalAnalysis {
+  relatedNiches: AIKeywordAnalysis['relatedNiches'];
+  enhancedInsights: {
+    aiPowered: boolean;
+    aiProvider: string;
+    seasonalPatterns: string[];
+    targetDemographics: string[];
+    contentSuggestions: string[];
+    keywordDiversity: number;
+    commercialKeywords: number;
+    lowCompetitionKeywords: number;
+    [key: string]: unknown; // For any additional insights
+  };
+}
+
+interface RequestBody {
+  keyword: string;
+  useAI?: boolean;
+  model?: string;
+}
+
 // OpenRouter AI-powered keyword and niche analysis
 async function analyzeWithOpenRouter(
   keyword: string, 
-  trendData: any, 
-  basicRelatedKeywords: any[]
+  trendData: TrendData, 
+  basicRelatedKeywords: BasicRelatedKeyword[]
 ): Promise<AIKeywordAnalysis> {
   const prompt = `
 You are an expert POD (Print on Demand) market analyst. Analyze the following data to generate comprehensive market insights for profitable POD products.
@@ -266,7 +308,7 @@ Return ONLY the JSON - no explanations or markdown formatting.
 }
 
 // Merge AI insights with original Google Trends analysis
-async function enhanceMarketAnalysis(originalAnalysis: any, aiAnalysis: AIKeywordAnalysis) {
+async function enhanceMarketAnalysis(originalAnalysis: OriginalAnalysis, aiAnalysis: AIKeywordAnalysis): Promise<EnhancedAnalysis> {
   // Combine and deduplicate keywords
   const allKeywords = [
     ...originalAnalysis.relatedKeywords || [],
@@ -291,9 +333,11 @@ async function enhanceMarketAnalysis(originalAnalysis: any, aiAnalysis: AIKeywor
       contentSuggestions: aiAnalysis.marketInsights.contentSuggestions,
       keywordDiversity: uniqueKeywords.length,
       commercialKeywords: uniqueKeywords.filter(k => 
-        k.searchIntent === 'commercial' || k.searchIntent === 'transactional'
+        'searchIntent' in k && (k.searchIntent === 'commercial' || k.searchIntent === 'transactional')
       ).length,
-      lowCompetitionKeywords: uniqueKeywords.filter(k => k.difficulty === 'low').length
+      lowCompetitionKeywords: uniqueKeywords.filter(k => 
+        'difficulty' in k && k.difficulty === 'low'
+      ).length
     }
   };
 }
@@ -303,7 +347,7 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
   
   try {
-    const body = await request.json();
+    const body: RequestBody = await request.json();
     const { keyword, useAI = true, model } = body;
 
     // Validation
@@ -331,11 +375,11 @@ export async function POST(request: NextRequest) {
 
     // Get basic Google Trends analysis
     const analyzer = new PODMarketAnalyzer();
-    const basicAnalysis = await analyzer.analyzeKeyword(keyword.trim());
+    const basicAnalysis: OriginalAnalysis = await analyzer.analyzeKeyword(keyword.trim());
 
     console.log(`📊 Google Trends analysis completed: ${basicAnalysis.relatedKeywords?.length || 0} keywords found`);
 
-    let finalAnalysis = basicAnalysis;
+    let finalAnalysis: OriginalAnalysis | EnhancedAnalysis = basicAnalysis;
     console.log('basicAnalyses', basicAnalysis);
     let aiEnhanced = false;
 
@@ -349,7 +393,7 @@ export async function POST(request: NextRequest) {
           process.env.OPENROUTER_MODEL = model;
         }
 
-        const trendData = {
+        const trendData: TrendData = {
           averagePopularity: basicAnalysis.searchVolume?.current || 0,
           trend: basicAnalysis.searchVolume?.trend || 'stable'
         };
@@ -361,7 +405,7 @@ export async function POST(request: NextRequest) {
         );
 
         finalAnalysis = await enhanceMarketAnalysis(basicAnalysis, aiAnalysis);
-        aiEnhanced = true
+        aiEnhanced = true;
         
         console.log('✅ OpenRouter AI enhancement completed successfully');
         
@@ -390,15 +434,17 @@ export async function POST(request: NextRequest) {
       }
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     const processingTime = Date.now() - startTime;
     console.error('💥 Keyword analysis error:', error);
+    
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     
     return NextResponse.json(
       {
         success: false,
         error: 'Failed to analyze keyword',
-        message: error.message || 'Unknown error occurred',
+        message: errorMessage,
         meta: {
           aiEnhanced: false,
           processingTime: `${processingTime}ms`,
