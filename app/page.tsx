@@ -382,19 +382,19 @@ export default function HomePage() {
                 title: "Sweet Dessert Art",
                 prompt: "A vibrant illustration of a layered ice cream sundae with colorful sprinkles, chocolate sauce dripping, retro diner aesthetic, bright pastel colors, detailed textures, commercial photography style, high resolution",
                 category: "Food & Beverage",
-                image: "img1.jpeg"
+                image: "/img1.jpeg"
               },
               {
                 title: "Modern Tech Design",
                 prompt: "Sleek smartphone mockup with geometric patterns, minimalist design, gradient backgrounds, professional product photography, clean lines, modern aesthetic, commercial quality",
                 category: "Technology",
-                image: "img2.jpeg"
+                image: "/img2.jpeg"
               },
               {
                 title: "Cute Pet Illustration",
                 prompt: "Adorable tabby kitten with floral wreath, watercolor style, soft pastels, whimsical design, detailed fur texture, commercial illustration, POD ready, high quality artwork",
                 category: "Animals & Pets",
-                image: "img3.jpeg"
+                image: "/img3.jpeg"
               }
             ].map((item, index) => (
               <motion.div

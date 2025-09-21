@@ -53,7 +53,7 @@ export async function POST(req: Request) {
 
     const audience = typeof body.audience === "string" ? body.audience.trim() : "";
     const inputs: Inputs = isObj(body.inputs) ? body.inputs : {};
-    const model = typeof body.model === "string" ? body.model : "deepseek/deepseek-r1:free";
+    const model = typeof body.model === "string" ? body.model : "deepseek/deepseek-chat-v3.1:free";
 
     if (!audience) return NextResponse.json({ error: "audience is required (string)" }, { status: 400 });
     if (!isObj(inputs)) return NextResponse.json({ error: "inputs is required (object)" }, { status: 400 });
@@ -119,7 +119,7 @@ Do not explain, do not add commentary. Always respect all mandatory rules, negat
       })
     });
 
-    const toolsJson = await toolsRes.json().catch(() => null);
+    const toolsJson = await toolsRes.json().catch(() => null as any);
     const noToolSupport =
       toolsRes.status === 404 ||
       (toolsJson?.error?.message &&
