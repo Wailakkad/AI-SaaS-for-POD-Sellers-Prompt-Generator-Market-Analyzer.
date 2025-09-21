@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import Image from 'next/image'
 
 // Animation variants
 const fadeUp = {
@@ -305,7 +306,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <p className="text-slate-700 italic">
-                  "This tool saves me hours every week. The results are always on point."
+                  &quot;This tool saves me hours every week. The results are always on point.&quot;
                 </p>
               </motion.div>
             </motion.div>
@@ -335,7 +336,7 @@ export default function HomePage() {
                       <span className="text-white">Generated Prompt:</span>
                     </div>
                     <p>
-                      "Professional digital art of an adorable tabby kitten wearing a bright red superhero cape and mask, heroic pose, detailed fur texture, vibrant colors, studio lighting, 4K resolution --ar 1:1 --style raw"
+                      &quot;Professional digital art of an adorable tabby kitten wearing a bright red superhero cape and mask, heroic pose, detailed fur texture, vibrant colors, studio lighting, 4K resolution --ar 1:1 --style raw&quot;
                     </p>
                   </div>
                   
@@ -403,9 +404,11 @@ export default function HomePage() {
                 className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
               >
                 <div className=" overflow-hidden">
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.title}
+                    width={600}
+                    height={400}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -435,7 +438,7 @@ export default function HomePage() {
             variants={fadeUp}
             className="text-3xl sm:text-4xl font-bold text-neutral-900 mb-16"
           >
-            Why it's important
+            Why it&quot;s important
           </motion.h2>
           
           <motion.div
