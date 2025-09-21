@@ -11,6 +11,7 @@ export async function GET(req: Request, { params }: { params: { keyword: string 
     
     return NextResponse.json(JSON.parse(results));
   } catch (error) {
+    console.error('Error fetching trends:', error);
     return NextResponse.json({ error: 'Failed to fetch trends' }, { status: 500 });
   }
 }

@@ -9,7 +9,7 @@ type PromptFormProps = {
 
 export const PromptForm: React.FC<PromptFormProps> = ({ setResult , setTemplate }) => {
   const { addPrompt } = usePromptContext();
-  const [audience, setAudience] = useState("POD Seller");
+  const [audience] = useState("POD Seller");
   const [inputs, setInputs] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
