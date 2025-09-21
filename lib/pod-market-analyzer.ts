@@ -31,6 +31,38 @@ interface MarketData {
   };
 }
 
+interface TimelineDataItem {
+  time: number;
+  value?: number[];
+}
+
+interface TrendData {
+  timelineData: TimelineDataItem[];
+  values: number[];
+  averagePopularity: number;
+  trend: 'rising' | 'stable' | 'declining';
+  recentAvg: number;
+  previousAvg: number;
+}
+
+interface RelatedKeyword {
+  keyword: string;
+  popularity: number;
+  trend: string;
+}
+
+interface Competition {
+  level: 'low' | 'medium' | 'high';
+  score: number;
+  marketSaturation: string;
+}
+
+interface Opportunity {
+  profitability: 'high' | 'medium' | 'low';
+  difficulty: 'easy' | 'medium' | 'hard';
+  recommendation: string;
+}
+
 export class PODMarketAnalyzer {
 
   async analyzeKeyword(keyword: string): Promise<MarketData> {
@@ -63,13 +95,13 @@ export class PODMarketAnalyzer {
       };
 
     
-      } catch (error: any) {
-  const errorMessage = error?.message || error?.toString() || 'Unknown error occurred';
+      } catch (error: unknown) {
+  const errorMessage = error instanceof Error ? error.message : (typeof error === 'string' ? error : 'Unknown error occurred');
   throw new Error(`Failed to analyze keyword: ${errorMessage}`);
 }
   }
 
-  private async getTrendData(keyword: string) {
+  private async getTrendData(keyword: string): Promise<TrendData> {
     const results = await googleTrends.interestOverTime({
       keyword: keyword,
       startTime: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000), // 12 months ago
@@ -84,15 +116,15 @@ export class PODMarketAnalyzer {
     }
 
     // Calculate average popularity
-    const values = timelineData.map((item: any) => item.value?.[0] || 0);
+    const values = timelineData.map((item: TimelineDataItem) => item.value?.[0] || 0);
     const averagePopularity = values.reduce((sum: number, val: number) => sum + val, 0) / values.length;
 
     // Determine trend direction (last 3 months vs previous 3 months)
     const recent = values.slice(-12); // Last 3 months (weekly data)
     const previous = values.slice(-24, -12); // Previous 3 months
     
-    const recentAvg = recent.reduce((sum : any, val: any) => sum + val, 0) / recent.length;
-    const previousAvg = previous.reduce((sum : any, val : any) => sum + val, 0) / previous.length;
+    const recentAvg = recent.reduce((sum: number, val: number) => sum + val, 0) / recent.length;
+    const previousAvg = previous.reduce((sum: number, val: number) => sum + val, 0) / previous.length;
     
     let trend: 'rising' | 'stable' | 'declining' = 'stable';
     if (recentAvg > previousAvg * 1.15) trend = 'rising';
@@ -108,7 +140,7 @@ export class PODMarketAnalyzer {
     };
   }
 
-  private async getRelatedQueries(keyword: string) {
+  private async getRelatedQueries(keyword: string): Promise<RelatedKeyword[]> {
     try {
       const results = await googleTrends.relatedQueries({ keyword });
       const parsedData = JSON.parse(results);
@@ -117,23 +149,23 @@ export class PODMarketAnalyzer {
       const risingQueries = parsedData.default?.rankedList?.[1]?.rankedKeyword || [];
 
       return [
-        ...topQueries.slice(0, 5).map((item: any) => ({
+        ...topQueries.slice(0, 5).map((item: { query: string; value: number }) => ({
           keyword: item.query,
           popularity: item.value,
           trend: 'stable'
         })),
-        ...risingQueries.slice(0, 3).map((item: any) => ({
+        ...risingQueries.slice(0, 3).map((item: { query: string; value: string | number }) => ({
           keyword: item.query,
-          popularity: item.value === 'Breakout' ? 100 : parseInt(item.value) || 50,
+          popularity: item.value === 'Breakout' ? 100 : parseInt(item.value.toString()) || 50,
           trend: 'rising'
         }))
       ];
-    } catch (error) {
+    } catch {
       return [];
     }
   }
 
-  private analyzeSeasonality(trendData: any) {
+  private analyzeSeasonality(trendData: TrendData) {
     const monthlyData = this.groupByMonth(trendData.timelineData);
     
     // Find peak months
@@ -158,7 +190,7 @@ export class PODMarketAnalyzer {
     return { pattern, peakMonths };
   }
 
-   private calculateCompetition(trendData: any, relatedQueries: any[]) {
+   private calculateCompetition(trendData: TrendData, relatedQueries: RelatedKeyword[]): Competition {
     // Simple competition scoring based on search volume and related keywords
     const avgPopularity = trendData.averagePopularity;
     const relatedCount = relatedQueries.length;
@@ -204,9 +236,9 @@ export class PODMarketAnalyzer {
     return { level, score, marketSaturation };
   }
 
-  private calculateOpportunity(trendData: any, competition: any) {
+  private calculateOpportunity(trendData: TrendData, competition: Competition): Opportunity {
     const { averagePopularity, trend } = trendData;
-    const { level: compLevel, score: compScore } = competition;
+    const { level: compLevel } = competition;
     
     let profitability: 'high' | 'medium' | 'low' = 'low';
     let difficulty: 'easy' | 'medium' | 'hard' = 'hard';
@@ -249,9 +281,7 @@ export class PODMarketAnalyzer {
     return { profitability, difficulty, recommendation };
   }
 
-  private generateInsights(keyword: string, trendData: any, opportunity: any) {
-    const { averagePopularity, trend } = trendData;
-    
+  private generateInsights(keyword: string, trendData: TrendData, opportunity: Opportunity) {
     // Suggest best product types based on keyword analysis
     const bestProductTypes = this.suggestProductTypes(keyword);
     
@@ -262,7 +292,7 @@ export class PODMarketAnalyzer {
     const suggestedPrice = this.suggestPricing(opportunity.profitability, opportunity.difficulty);
     
     // Marketing tips
-    const marketingTips = this.generateMarketingTips(keyword, trend, opportunity);
+    const marketingTips = this.generateMarketingTips(keyword, trendData.trend, opportunity);
 
     return {
       bestProductTypes,
@@ -272,15 +302,10 @@ export class PODMarketAnalyzer {
     };
   }
 
-
-  
-
- 
-
-  private groupByMonth(timelineData: any[]) {
+  private groupByMonth(timelineData: TimelineDataItem[]): { [key: number]: number } {
     const monthlyData: { [key: number]: number } = {};
     
-    timelineData.forEach((item: any) => {
+    timelineData.forEach((item: TimelineDataItem) => {
       const date = new Date(item.time * 1000);
       const month = date.getMonth();
       const value = item.value?.[0] || 0;
@@ -345,7 +370,7 @@ export class PODMarketAnalyzer {
     }
   }
 
-  private generateMarketingTips(keyword: string, trend: string, opportunity: any): string[] {
+  private generateMarketingTips(keyword: string, trend: string, opportunity: Opportunity): string[] {
     const tips = [
       `Use "${keyword}" in your product titles and tags for better SEO`,
       'Create multiple design variations to test what sells best',

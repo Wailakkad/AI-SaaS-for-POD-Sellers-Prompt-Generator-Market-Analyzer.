@@ -86,6 +86,7 @@ export const PODMarketAnalyzer: React.FC = () => {
       }
     } catch (err) {
       setError('Network error. Please try again.');
+      console.error(err);
     }
 
     setLoading(false);
@@ -197,7 +198,7 @@ export const PODMarketAnalyzer: React.FC = () => {
                       </span>
                     )}
                   </h2>
-                  <p className="text-gray-600">Keyword: <span className="font-semibold text-gray-900">"{analysis.keyword}"</span></p>
+                  <p className="text-gray-600">Keyword: <span className="font-semibold text-gray-900">&quot;{analysis.keyword}&quot;</span></p>
                 </div>
                 <div className={`inline-flex items-center px-4 py-2 rounded-full border-2 font-semibold text-sm ${getOpportunityStyles(analysis.opportunity.profitability)} mt-4 md:mt-0`}>
                   <Activity className="h-4 w-4 mr-2" />
