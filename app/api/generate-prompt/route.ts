@@ -119,7 +119,7 @@ Do not explain, do not add commentary. Always respect all mandatory rules, negat
       })
     });
 
-    const toolsJson = await toolsRes.json().catch(() => null as any);
+    const toolsJson = await toolsRes.json().catch(() => null);
     const noToolSupport =
       toolsRes.status === 404 ||
       (toolsJson?.error?.message &&
