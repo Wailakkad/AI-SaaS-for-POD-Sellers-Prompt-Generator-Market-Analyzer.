@@ -146,7 +146,7 @@ export default function HomePage() {
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <motion.a
-                  href="#generate"
+                  href="/generate"
                   className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 hover:scale-105"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -154,6 +154,7 @@ export default function HomePage() {
                   Generate a Free Prompt
                 </motion.a>
                 <motion.button
+                  
                   className="inline-flex items-center justify-center border-2 border-neutral-200 hover:border-neutral-300 text-neutral-700 px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:bg-neutral-50"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -286,6 +287,7 @@ export default function HomePage() {
               </p>
               
               <motion.button
+                onClick={() => window.location.href = '/generate'}
                 className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -340,7 +342,7 @@ export default function HomePage() {
                     </p>
                   </div>
                   
-                  <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                  <button onClick={() => window.location.href = '/generate'} className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-colors">
                     Generate
                   </button>
                 </div>
@@ -349,7 +351,174 @@ export default function HomePage() {
           </div>
         </div>
       </motion.section>
-
+      {/* Market Analyzer Section */}
+<motion.section
+  id="market-analyzer"
+  className="py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20"
+  initial="initial"
+  whileInView="animate"
+  viewport={{ once: true, amount: 0.3 }}
+  variants={stagger}
+>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <motion.div variants={fadeUp}>
+        <div className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium mb-6">
+          📊 Market Insights
+        </div>
+        
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 mb-6 text-balance">
+          Market Analyzer for POD Sellers
+        </h2>
+        
+        <p className="text-lg text-slate-600 mb-8 max-w-lg">
+          Make data-driven decisions for your print-on-demand business. Analyze product demand, discover profitable niches, and get AI-powered insights to maximize your sales potential.
+        </p>
+        
+        <motion.div variants={stagger} className="space-y-4 mb-8">
+          {[
+            {
+              icon: "🎯",
+              title: "Discover trending products & niches",
+              description: "Identify hot markets before your competition"
+            },
+            {
+              icon: "📈",
+              title: "Track competitor performance",
+              description: "Monitor successful designs and strategies"
+            },
+            {
+              icon: "🤖",
+              title: "Get AI-powered sales forecasts",
+              description: "Predict demand and optimize your inventory"
+            }
+          ].map((benefit, index) => (
+            <motion.div
+              key={index}
+              variants={fadeUp}
+              className="flex items-start gap-4"
+            >
+              <div className="flex-shrink-0 w-10 h-10 bg-white rounded-xl shadow-sm border flex items-center justify-center text-lg">
+                {benefit.icon}
+              </div>
+              <div>
+                <h3 className="font-semibold text-neutral-900 mb-1">{benefit.title}</h3>
+                <p className="text-slate-600 text-sm">{benefit.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+        
+        <motion.button
+          onClick={() => window.location.href = '/market-analyzer'}
+          variants={fadeUp}
+          className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Analyze My Market
+        </motion.button>
+      </motion.div>
+      
+      <motion.div
+        variants={fadeUp}
+        className="relative"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.15),transparent_70%)] -m-8"></div>
+        <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6 lg:p-8">
+          {/* Analytics Dashboard Mockup */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+            <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+            <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+            <div className="ml-auto text-sm font-medium text-neutral-600">Market Dashboard</div>
+          </div>
+          
+          {/* Top Metrics Row */}
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-100">
+              <div className="text-xs font-medium text-green-600 mb-1">Sales Volume</div>
+              <div className="text-lg font-bold text-green-700">$12,847</div>
+              <div className="text-xs text-green-600">+23.5% ↗</div>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
+              <div className="text-xs font-medium text-blue-600 mb-1">Trend Score</div>
+              <div className="text-lg font-bold text-blue-700">94.2</div>
+              <div className="text-xs text-blue-600">Hot 🔥</div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-4 border border-purple-100">
+              <div className="text-xs font-medium text-purple-600 mb-1">Competition</div>
+              <div className="text-lg font-bold text-purple-700">Low</div>
+              <div className="text-xs text-purple-600">Opportunity</div>
+            </div>
+          </div>
+          
+          {/* Chart Visualization */}
+          <div className="bg-neutral-50 rounded-xl p-4 mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-sm font-medium text-neutral-700">Demand Forecast</div>
+              <div className="text-xs text-neutral-500">Next 30 days</div>
+            </div>
+            <div className="flex items-end gap-1 h-20">
+              {[65, 45, 78, 89, 56, 92, 67, 84, 91, 76, 88, 95].map((height, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ height: 0 }}
+                  animate={{ height: `${height}%` }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  className="bg-gradient-to-t from-blue-400 to-blue-600 rounded-sm flex-1 min-w-0"
+                ></motion.div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Trending Products */}
+          <div className="space-y-3">
+            <div className="text-sm font-medium text-neutral-700 mb-3">Trending Niches</div>
+            {[
+              { name: "Funny Cat T-Shirts", trend: "+156%", color: "text-green-600" },
+              { name: "Minimalist Mugs", trend: "+89%", color: "text-blue-600" },
+              { name: "Quote Posters", trend: "+67%", color: "text-purple-600" }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.2 + 0.5, duration: 0.4 }}
+                className="flex items-center justify-between bg-white rounded-lg p-3 border"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center text-white text-xs font-bold">
+                    #{index + 1}
+                  </div>
+                  <span className="text-sm font-medium text-neutral-700">{item.name}</span>
+                </div>
+                <span className={`text-sm font-semibold ${item.color}`}>{item.trend}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Floating Analytics Badge */}
+        <motion.div
+          animate={{ y: [0, -8, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -bottom-4 -right-4 bg-white rounded-lg shadow-lg p-3 border"
+        >
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-blue-500 rounded-lg flex items-center justify-center text-white text-sm">
+              📊
+            </div>
+            <div>
+              <div className="text-xs font-medium text-neutral-700">Live Data</div>
+              <div className="text-xs text-neutral-500">Updated now</div>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
+  </div>
+</motion.section>
     {/* Gallery Section */}
       <motion.section
         id="gallery"
@@ -369,7 +538,7 @@ export default function HomePage() {
             </motion.h2>
             <motion.a
               variants={fadeUp}
-              href="#generate"
+              href="/generate"
               className="hidden sm:inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105"
             >
               Generate My First Prompt

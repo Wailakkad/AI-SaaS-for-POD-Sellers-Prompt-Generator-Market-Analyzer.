@@ -2,50 +2,34 @@ function Footer() {
   return (
     <footer className="bg-white border-t border-neutral-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
           <div>
             <h3 className="font-semibold text-neutral-900 mb-4">Product</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Features</a></li>
+            <ul className="space-y-3 text-center md:text-left">
+              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Home</a></li>
               <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Pricing</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Templates</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Gallery</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="font-semibold text-neutral-900 mb-4">Resources</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Documentation</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Tutorials</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Blog</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Help Center</a></li>
             </ul>
           </div>
           
           <div>
             <h3 className="font-semibold text-neutral-900 mb-4">Company</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">About</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Careers</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Contact</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">News</a></li>
+            <ul className="space-y-3 text-center md:text-left">
+              <li><a href="/About" className="text-slate-600 hover:text-neutral-900 transition-colors">About</a></li>
+              <li><a href="/Blog" className="text-slate-600 hover:text-neutral-900 transition-colors">Blog</a></li>
             </ul>
           </div>
           
           <div>
             <h3 className="font-semibold text-neutral-900 mb-4">Legal</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3 text-center md:text-left">
               <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Privacy</a></li>
               <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Terms</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Cookie Policy</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">GDPR</a></li>
             </ul>
           </div>
         </div>
         
         <div className="flex flex-col md:flex-row items-center justify-between mt-8 pt-8 border-t border-neutral-100">
-          <p className="text-slate-600 text-sm">© 2024 DP. All rights reserved.</p>
+          <p className="text-slate-600 text-sm">© 2025 DP. All rights reserved.</p>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
             <a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

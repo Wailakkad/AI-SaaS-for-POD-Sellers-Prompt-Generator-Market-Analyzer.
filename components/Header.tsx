@@ -12,9 +12,9 @@ function Header() {
           </div>
           
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Home</a>
-            <a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">About</a>
-            <a href="#" className="text-slate-600 hover:text-neutral-900 transition-colors">Blog</a>
+            <a href="/" className="text-slate-600 hover:text-neutral-900 transition-colors">Home</a>
+            <a href="/About" className="text-slate-600 hover:text-neutral-900 transition-colors">About</a>
+            <a href="/Blog" className="text-slate-600 hover:text-neutral-900 transition-colors">Blog</a>
           </nav>
           
           <button onClick={()=> router.push("/generate") } className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300">
