@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import Link from 'next/link'
 
 // Animation variants
@@ -155,7 +154,7 @@ export default function BlogPage() {
             viewport={{ once: true, amount: 0.1 }}
             variants={stagger}
           >
-            {blogPosts.map((post, index) => (
+            {blogPosts.map((post) => (
               <motion.article
                 key={post.id}
                 variants={fadeUp}

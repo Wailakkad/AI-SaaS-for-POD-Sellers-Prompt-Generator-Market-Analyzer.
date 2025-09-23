@@ -105,7 +105,7 @@ export default function AboutPage() {
                 </p>
                 
                 <p>
-                  That's why we built the first platform to combine AI prompt generation with Google Trends-powered market analysis. Now creators can generate professional prompts in seconds AND validate their ideas with real market data.
+                  That&lsquo;s why we built the first platform to combine AI prompt generation with Google Trends-powered market analysis. Now creators can generate professional prompts in seconds AND validate their ideas with real market data.
                 </p>
                 
                 <p className="font-medium text-neutral-900">
